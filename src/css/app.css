@@ -1,0 +1,67 @@
+ .trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+ .trigger:hover {
+    color: #1890ff;
+}
+
+.logo {
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px;
+}
+
+.ant-layout-sider{
+    background-color: #ededed;
+}
+
+.ant-menu-dark{
+    background-color: transparent;
+}
+
+.ant-menu-dark .ant-menu-item{
+    color: #2f2f2f;
+}
+
+.ant-menu-dark .ant-menu-item:hover{
+    color: #2f2f2f;
+    background-color: #e2e2e2;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected{
+    background-color: #e2e2e2;
+    color: #c34839;
+}
+
+.ant-layout{
+    min-height: 100vh;
+} 
+
+.title{
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    color: #838383;
+}
+
+.title-select{
+    font-size: 16px;
+    color: #000;
+}
+
+.menu-item{
+    margin: 4px 0;
+    padding-left: 24px;
+    color: #888888;
+    height: 40px;
+    line-height: 40px;
+}
+
+.menu-icon{
+    margin-right: 10px;
+}
