@@ -1,9 +1,9 @@
 import axios from "axios";
 
-let baseUrl =`http://musicapi.leanapp.cn`;
+let baseUrl =`http://localhost:3000`;
 
 
-function http_get(url){
+export function http_get({url}){
     let urlNew=`${baseUrl}${url}`
     return new Promise((resolve,reject)=>{
         axios.get(urlNew).then(res=>{
@@ -14,7 +14,7 @@ function http_get(url){
     })
 }
 
-function http_post(url,data){
+export function http_post({url,data}){
     let urlNew=`${baseUrl}${url}`;
     return new Promise((resolve,reject)=>{
         axios.post(urlNew,data).then(res=>{
@@ -23,9 +23,4 @@ function http_post(url,data){
             reject(err)
         })
     })
-}
-
-module.exports={
-    http_get,
-    http_post
-}
+} 
