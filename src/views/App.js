@@ -2,28 +2,48 @@ import React from 'react'
 
 import { Layout, Menu, Icon } from 'antd';
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route,Link } from "react-router-dom";
 
 import Suggestion from "./Suggestion";
+import SongList from './SongList';
+import FM from './FM'
 
 import '../css/app.css'
-import {http_get} from '../util/http'
 
 const { Header, Content,Footer, Sider } = Layout;
 
-class App extends React.Component{ 
-
-  componentDidMount(){
-    this.getBanner();
-  };
-
-  getBanner(){
-    let postData={
-      url:'/banner'
-    }
-    http_get(postData).then(res=>{
-      console.log(res)
+class App extends React.Component{
+  state={
+    isClickedSuggestion:true,
+    isClickedSongList:false,
+    isClickedFM:false
+  }
+  clickTitle(e){
+    this.setState({
+      isClickedSuggestion:false,
+      isClickedSongList:false,
+      isClickedFM:false
     })
+    switch(e){
+      case 'suggestion':{
+        this.setState({
+          isClickedSuggestion:true
+        })
+        break;
+      };
+      case 'songList':{
+        this.setState({
+          isClickedSongList:true
+        })
+        break;
+      };
+      case 'FM':{
+        this.setState({
+          isClickedFM:true
+        })
+        break;
+      }
+    }
   };
   render() {
     return (
@@ -67,15 +87,16 @@ class App extends React.Component{
             </Menu>
           </Sider>
         <Layout>
+        <Router>
           <Header style={{display:'flex',justifyContent: 'space-around', background: '#fff', padding: 0 }}>
-            <Router className="title">
-              <Route path='/' component={Suggestion}>个性推荐</Route>
-              <div>歌单</div>
-              <div>主播电台</div>
+            <div className="title">
+              <Link to='/' className={this.state.isClickedSuggestion?'title-select':''} onClick={(e)=>this.clickTitle('suggestion')}>个性推荐</Link>
+              <Link to='/songList' className={this.state.isClickedSongList?'title-select':''} onClick={(e)=>this.clickTitle('songList')}>歌单</Link>
+              <Link to='/FM' className={this.state.isClickedFM?'title-select':''} onClick={(e)=>this.clickTitle('FM')}>主播电台</Link>
               <div>排行榜</div>
               <div>歌手</div>
               <div>最新音乐</div>
-            </Router>
+            </div>
           </Header>
           <Content
             style={{
@@ -85,9 +106,12 @@ class App extends React.Component{
               minHeight: 280,
             }}
           >
-            Content
+            <Route exact path='/' component={Suggestion}></Route>
+            <Route exact path='/songList' component={SongList}></Route>
+            <Route exact path='/FM' component={FM}></Route>
           </Content>
           <Footer style={{textAlign:"center"}}>仿网易云音乐 ©2019 Created by Alice.Zhao</Footer>
+        </Router>
         </Layout>
       </Layout>
     );

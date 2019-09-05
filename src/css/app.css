@@ -49,9 +49,13 @@
     color: #838383;
 }
 
+.title a{
+    color: #838383;
+}
+
 .title-select{
     font-size: 16px;
-    color: #000;
+    color: #000 !important;
 }
 
 .menu-item{
