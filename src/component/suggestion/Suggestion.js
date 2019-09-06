@@ -1,5 +1,5 @@
 import React from 'react'
-import {http_get} from '../../util/http'
+import {http_get} from '../../assets/js/http'
 
 import { Carousel } from 'antd';
 
