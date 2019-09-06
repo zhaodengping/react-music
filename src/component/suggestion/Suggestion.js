@@ -1,11 +1,11 @@
 import React from 'react'
-import {http_get} from '../util/http'
+import {http_get} from '../../util/http'
 
 import { Carousel } from 'antd';
 
 import SuggestionItem from './SuggestionSongs'
 
-import '../css/suggestion.css'
+import '../../assets/css/suggestion.css'
 
 export default class Suggestion extends React.Component{
     state={
