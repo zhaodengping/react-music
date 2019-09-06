@@ -42,6 +42,19 @@
     min-height: 100vh;
 } 
 
+.contanier{
+    margin: 0 auto;
+    width: 1000px;
+}
+
+.sider{
+    padding-top: 50px;
+}
+
+header{
+    border:1px solid #f9f9f9
+}
+
 .title{
     display: flex;
     justify-content: space-around;
