@@ -8,18 +8,21 @@ import {http_get} from '../assets/js/http'
 
 export default class Login extends React.Component{ 
     state={
-        btnName:'登录',
-        loginText:'请输入密码',
-        isShow:false,
-        isLogin:true,//目前是登录
-        userInfo:{
-            phone:'',
-            password:''
-        }
+        
     }
     constructor(props){
         super(props);
-        this.state.isShow=props.isShow
+        this.state={
+            isShow:props.isShow,
+            userInfo:{
+                phone:'',
+                password:''
+            },
+            btnName:'登录',
+            loginText:'请输入密码',
+            isLogin:true,//目前是登录 
+            isCheck:false,//发送验证码页面
+        }
     };
     componentWillReceiveProps(props){
         this.setState({
@@ -38,6 +41,10 @@ export default class Login extends React.Component{
     //注册
     gotoRegister(){
         this.setState({
+            userInfo:{
+                phone:'',
+                password:''
+            },
             isLogin:false,
             btnName:'注册',
             loginText:"设置登录密码，不少于6位",
@@ -46,6 +53,10 @@ export default class Login extends React.Component{
     //返回登录
     gotoLogin(){
         this.setState({
+            userInfo:{
+                phone:'',
+                password:''
+            },
             isLogin:true,
             btnName:'登录',
             loginText:"请输入密码",
@@ -77,18 +88,35 @@ export default class Login extends React.Component{
                 message.error('请填写安全的密码');
                 return
             }
+            this.checkPhoneUse()
         }
     }
+    //登陆
     login(){
         let url=`/login/cellphone?phone=${this.state.userInfo.phone}&password=${this.state.userInfo.password}`;
         http_get({url}).then(res=>{
             console.log(res)
         }).catch(err=>{
+            message.error('账户不存在')
+        })
+    };
+    // 注册
+    checkPhoneUse(){
+        let url=`/cellphone/existence/check?phone=${this.state.userInfo.phone}`
+        http_get({url}).then(res=>{
+            if(res.data.exist===-1){
+                this.setState({
+                    isCheck:true
+                })
+            }else{
+                message.warning('手机号已经注册，请直接登陆！')
+            }
+        }).catch(err=>{
             console.log(err)
         })
     };
+
     render(){
-        let loginItem=null;
         //其他登录方式
         let otherStyle=[{
             icon:'\ue7e5',
@@ -113,44 +141,36 @@ export default class Login extends React.Component{
                 </div> 
             )
         })
-
-        //返回登录
-        let backLogin=null;
-        if(!this.state.isLogin){
-            backLogin=(
-                <div className="login-back" onClick={()=>this.gotoLogin()}>返回登录</div>
-            )
-        }
-        //注册
-        let register=null;
-        if(this.state.isLogin){
-            register=(
-                <div className="login-register" onClick={()=>this.gotoRegister()}>注册</div>
-            )
-        }
-        if(this.state.isShow){
-            loginItem=(
+        return(
+            <div>{this.state.isShow?
                 <div className="login">
                     <Icon type="close" className="login-icon" onClick={()=>this.close()}/>
                     <div className="login-width">
                         <img src={require('../assets/images/login-bg.png')} alt='默认图片' width="300" className="login-img"/>
-                        <Input placeholder="请输入手机号" prefix={<i className="iconfont">&#xe6bd;</i>} onChange={(e)=>this.getInputValue(e,'mobile')} className="input"/>
-                        <Input placeholder={this.state.loginText} prefix={<i className="iconfont">&#xe672;</i>} onChange={(e)=>this.getInputValue(e,'password')} className="input"/>
-                        <Button type="danger" block className="login-btn" onClick={()=>this.btnRequest()}>{this.state.btnName}</Button>
-                        {register}
-                        <div className="login-otherTitle">
-                            <div className="login-lineLeft"></div>
-                            <div>其他{this.state.btnName}方式</div>
-                            <div className="login-lineRight"></div>
-                        </div>
-                        <div className="login-other">{otherLoginStyle}</div>
-                        {backLogin}
-                    </div>
-                </div>
-            )
-        }
-        return(
-            <div>{loginItem}</div>
+                        {this.state.isCheck?
+                            <div>
+                                <div>为了安全，我们会向你的手机发送短信校验码</div>
+                                
+                            </div>
+                            :
+                            <div>
+                                <Input placeholder="请输入手机号" prefix={<i className="iconfont">&#xe6bd;</i>} onChange={(e)=>this.getInputValue(e,'mobile')} className="input"/>
+                                <Input placeholder={this.state.loginText} prefix={<i className="iconfont">&#xe672;</i>} onChange={(e)=>this.getInputValue(e,'password')} className="input"/>
+                                <Button type="danger" block className="login-btn" onClick={()=>this.btnRequest()}>{this.state.btnName}</Button>
+                                <div>{this.state.isLogin}</div>
+                                {this.state.isLogin?<div className="login-register" onClick={()=>this.gotoRegister()}>注册</div>:null}
+                                <div className="login-otherTitle">
+                                    <div className="login-lineLeft"></div>
+                                    <div>其他{this.state.btnName}方式</div>
+                                    <div className="login-lineRight"></div>
+                                </div>
+                                <div className="login-other">{otherLoginStyle}</div>
+                                {this.state.isLogin?null:<div className="login-back" onClick={()=>this.gotoLogin()}>返回登录</div>}
+                            </div>
+                        }
+                     </div>
+                </div>:null}
+            </div>
         )
     }
 }

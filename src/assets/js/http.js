@@ -8,7 +8,7 @@ export function http_get({url}){
     return new Promise((resolve,reject)=>{
         axios.get(urlNew).then(res=>{
             resolve(res)
-        }).then(err=>{
+        }).catch(err=>{
             reject(err)
         })
     })

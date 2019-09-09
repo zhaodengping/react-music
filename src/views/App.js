@@ -18,7 +18,7 @@ class App extends React.Component{
     isClickedSuggestion:true,
     isClickedSongList:false,
     isClickedFM:false,
-    isLoginShow:true
+    isLoginShow:false
   }
   clickTitle(e){
     this.setState({
