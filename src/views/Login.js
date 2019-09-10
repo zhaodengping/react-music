@@ -6,10 +6,7 @@ import '../assets/css/login.css'
 import {checkPhone} from '../assets/js/util'
 import {http_get} from '../assets/js/http'
 
-export default class Login extends React.Component{ 
-    state={
-        
-    }
+export default class Login extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -22,6 +19,9 @@ export default class Login extends React.Component{
             loginText:'请输入密码',
             isLogin:true,//目前是登录 
             isCheck:false,//发送验证码页面
+            timeBtn:'发送验证码',
+            timeBtnClick:true,
+            code:'',//验证码
         }
     };
     componentWillReceiveProps(props){
@@ -48,6 +48,7 @@ export default class Login extends React.Component{
             isLogin:false,
             btnName:'注册',
             loginText:"设置登录密码，不少于6位",
+            isCheck:false
         })
     };
     //返回登录
@@ -60,6 +61,7 @@ export default class Login extends React.Component{
             isLogin:true,
             btnName:'登录',
             loginText:"请输入密码",
+            isCheck:false
         })
     };
     getInputValue(e,flag){
@@ -108,6 +110,7 @@ export default class Login extends React.Component{
                 this.setState({
                     isCheck:true
                 })
+                this.sendCode()
             }else{
                 message.warning('手机号已经注册，请直接登陆！')
             }
@@ -115,7 +118,49 @@ export default class Login extends React.Component{
             console.log(err)
         })
     };
-
+    //发送验证码
+    sendCode(){
+        let url=`/captcha/sent?phone=${this.state.userInfo.phone}`;
+        http_get({url}).then(res=>{
+            if(res.data.code===200){
+                let time=60
+                let that=this;
+                setInterval(function(){
+                    if(time>0){
+                        time--
+                        that.setState({
+                            timeBtn:time
+                        })
+                    }else{
+                        that.setState({
+                            timeBtnClick:false,
+                            timeBtn:'发送验证码'
+                        })
+                    }
+                },1000)
+            }
+        }).catch(err=>{
+            message.error('验证码一天最多发5次～');
+            this.setState({
+                isShow:false
+            })
+        })
+    };
+    //下一步,注册
+    nextStep(){
+        let url=`/register/cellphone?phone=${this.state.userInfo.phone}&password=${this.state.userInfo.password}&captcha=${this.state.code}`
+        http_get({url}).then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err)
+        })
+    };
+    //填写验证码
+    getCode(e){
+        this.setState({
+            code:e.target.value
+        })
+    };
     render(){
         //其他登录方式
         let otherStyle=[{
@@ -150,12 +195,17 @@ export default class Login extends React.Component{
                         {this.state.isCheck?
                             <div>
                                 <div>为了安全，我们会向你的手机发送短信校验码</div>
-                                
+                                <div className='code-flex'>
+                                    <Input placeholder='请写验证码' prefix={<i className="iconfont">&#xe618;</i>} onChange={(e)=>this.getCode(e)}/>
+                                    <Button className='btn-time' type='danger' disabled={this.state.timeBtnClick}>{this.state.timeBtn}</Button>
+                                </div>
+                                <Button type="danger" block className='next-step' onClick={()=>this.nextStep()}>下一步</Button>
+                                <div className="login-back" onClick={()=>this.gotoLogin()}>返回登录</div>
                             </div>
                             :
                             <div>
                                 <Input placeholder="请输入手机号" prefix={<i className="iconfont">&#xe6bd;</i>} onChange={(e)=>this.getInputValue(e,'mobile')} className="input"/>
-                                <Input placeholder={this.state.loginText} prefix={<i className="iconfont">&#xe672;</i>} onChange={(e)=>this.getInputValue(e,'password')} className="input"/>
+                                <Input.Password placeholder={this.state.loginText} prefix={<i className="iconfont">&#xe672;</i>} onChange={(e)=>this.getInputValue(e,'password')} className="input"/>
                                 <Button type="danger" block className="login-btn" onClick={()=>this.btnRequest()}>{this.state.btnName}</Button>
                                 <div>{this.state.isLogin}</div>
                                 {this.state.isLogin?<div className="login-register" onClick={()=>this.gotoRegister()}>注册</div>:null}

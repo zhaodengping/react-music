@@ -6,3 +6,12 @@ export function checkPhone(e){
     }
     return canUse
 }
+
+//播放次数超过10万，显示万
+export function showCount(e){
+    let flag=false;
+    if(e>100000){
+        flag=true
+    }
+    return flag
+}

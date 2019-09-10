@@ -51,6 +51,16 @@
     padding-top: 50px;
 }
 
+.slide-icon{
+    margin-right: 10px;
+    font-size: 40px;
+}
+
+.info{
+    display: flex;
+    align-items: center;
+}
+
 header{
     border:1px solid #f9f9f9
 }
