@@ -90,3 +90,16 @@
     cursor: pointer;
 }
 
+.code-flex{
+    display: flex;
+    margin: 20px 0 40px 0;
+}
+
+.btn-time{
+    margin-left: 10px;
+    width: 150px;
+}
+
+.next-step{
+    margin-bottom: 100px;
+}

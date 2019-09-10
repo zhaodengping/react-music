@@ -18,7 +18,7 @@ class App extends React.Component{
     isClickedSuggestion:true,
     isClickedSongList:false,
     isClickedFM:false,
-    isLoginShow:true
+    isLoginShow:false
   }
   clickTitle(e){
     this.setState({
@@ -61,7 +61,13 @@ class App extends React.Component{
       <div className="contanier">
       <Layout>
         <Sider trigger={null} collapsible className="sider">
-        <div className="menu-item" onClick={(e)=>this.toLogin(e)}>个人信息</div>
+        <div className="menu-item" onClick={(e)=>this.toLogin(e)}>
+          <div className="info">
+            <i className='iconfont slide-icon'>&#xe616;</i>
+            <span>未登录</span>
+            <i className='iconfont'>&#xe6b7;</i>
+          </div>
+        </div>
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <Menu.Item key="1">
             <i className="iconfont menu-icon">&#xe617;</i>

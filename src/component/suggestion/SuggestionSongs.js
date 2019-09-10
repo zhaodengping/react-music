@@ -6,7 +6,10 @@ export default class SuggestionSongs extends React.Component{
     render(){
         return(
             <div>
-                <div className="sugg-title">推荐歌单 ></div>
+                <div className="sugg-title">
+                    <span>推荐歌曲</span>
+                    <i className='iconfont'>&#xe64a;</i>
+                </div>
             </div>
         )
     }
