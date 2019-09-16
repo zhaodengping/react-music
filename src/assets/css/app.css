@@ -59,6 +59,18 @@
 .info{
     display: flex;
     align-items: center;
+    cursor: pointer;
+}
+
+.info span{
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.slide-right{
+    margin-left: 10px;
+    font-size: 10px;
 }
 
 header{

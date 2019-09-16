@@ -65,7 +65,7 @@ class App extends React.Component{
           <div className="info">
             <i className='iconfont slide-icon'>&#xe616;</i>
             <span>未登录</span>
-            <i className='iconfont'>&#xe6b7;</i>
+            <i className='iconfont slide-right'>&#xe6b7;</i>
           </div>
         </div>
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>

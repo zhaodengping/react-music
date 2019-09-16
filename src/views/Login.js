@@ -98,6 +98,10 @@ export default class Login extends React.Component{
         let url=`/login/cellphone?phone=${this.state.userInfo.phone}&password=${this.state.userInfo.password}`;
         http_get({url}).then(res=>{
             console.log(res)
+            this.setState({
+                isShow:false
+            })
+            console.log(window.document.cookie)
         }).catch(err=>{
             message.error('账户不存在')
         })
@@ -150,7 +154,12 @@ export default class Login extends React.Component{
     nextStep(){
         let url=`/register/cellphone?phone=${this.state.userInfo.phone}&password=${this.state.userInfo.password}&captcha=${this.state.code}`
         http_get({url}).then(res=>{
-            console.log(res)
+            if(res.data.account){
+                message.success('注册成功！');
+                this.setState({
+                    isShow:false
+                })
+            }
         }).catch(err=>{
             console.log(err)
         })
