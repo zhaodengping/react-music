@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {http_get} from '../assets/js/http'
+import {http_get,http_getWithCookie} from '../assets/js/http'
 import '../assets/css/songsList.css'
 import {showCount} from '../assets/js/util'
 
@@ -21,6 +21,7 @@ export default class Suggestion extends React.Component{
     componentDidMount(){
         this.getAllSongs()
         this.getHotTags()
+        this.getRecommondSongs()
     };
     getHotTags(){
         let url=`/playlist/hot`;
@@ -34,6 +35,14 @@ export default class Suggestion extends React.Component{
             console.log(err)
         })
     }
+    getRecommondSongs(){
+        let url='/recommend/songs';
+        http_getWithCookie({url}).then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err)
+        })
+    };
     getAllSongs(){
         let url=`/top/playlist?limit=${this.state.pageSize}`
         http_get({url}).then(res=>{
